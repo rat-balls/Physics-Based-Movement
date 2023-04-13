@@ -10,6 +10,12 @@ public class Stand : MonoBehaviour
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private float force;
     [SerializeField] private bool standing;
+    [Space]
+    [Header("Feet")]
+    [SerializeField] private Rigidbody FootL;
+    [SerializeField] private Rigidbody FootR;
+    [SerializeField] private float feetDist;
+    [SerializeField] private bool feetGrounded;
 
     // Update is called once per frame
     void Update()
@@ -19,6 +25,13 @@ public class Stand : MonoBehaviour
             standing = false;
         } else {
             standing = true;
+        }
+
+        if(Physics.Raycast(FootL.position, Vector3.down, feetDist, groundMask) || Physics.Raycast(FootR.position, Vector3.down, feetDist, groundMask))
+        {
+            feetGrounded = false;
+        } else {
+            feetGrounded = true;
         }
     }
 
