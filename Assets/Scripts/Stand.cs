@@ -15,11 +15,17 @@ public class Stand : MonoBehaviour
     [SerializeField] private Rigidbody FootL;
     [SerializeField] private Rigidbody FootR;
     [SerializeField] private float feetDist;
-    [SerializeField] private bool feetGrounded;
+    [SerializeField] private bool footLGrounded;
+    [SerializeField] private bool footRGrounded;
+    
+    private RaycastHit hit;
+    private Vector3 Lhit;
+    private Vector3 Rhit;
 
     // Update is called once per frame
     void Update()
     {
+
         if(Physics.Raycast(Head.position, Vector3.down, distance, groundMask))
         {
             standing = false;
@@ -27,16 +33,31 @@ public class Stand : MonoBehaviour
             standing = true;
         }
 
-        if(Physics.Raycast(FootL.position, Vector3.down, feetDist, groundMask) || Physics.Raycast(FootR.position, Vector3.down, feetDist, groundMask))
+        if(Physics.Raycast(FootL.position, Vector3.down, out hit, feetDist, groundMask))
         {
-            feetGrounded = false;
+            footLGrounded = true;
+            Lhit = hit.point;
         } else {
-            feetGrounded = true;
+            footLGrounded = false;
+        }
+
+        if(Physics.Raycast(FootR.position, Vector3.down, out hit, feetDist, groundMask))
+        {
+            footRGrounded = true;
+            Rhit = hit.point;
+        } else {
+            footRGrounded = false;
         }
     }
 
     private void FixedUpdate() 
-    {
+    {   
+        if(footLGrounded)
+        {
+
+        }
+
+
         if(!standing)
         {
             Head.AddForce(new Vector3(0f, force, 0f), ForceMode.Force);
